@@ -31,6 +31,7 @@ fn spawn_booper(mut commands: Commands, scene_assets: Res<SceneAssets>) {
             rigid_body: RigidBody::Dynamic,
             model: SceneBundle {
                 scene: scene_assets.booper.clone(),
+                transform: Transform::from_scale(Vec3::new(0.1, 0.1, 0.1)),
                 ..default()}
         },
         Booper,
