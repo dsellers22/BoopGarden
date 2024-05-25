@@ -1,6 +1,7 @@
 ﻿use bevy::prelude::*;
+use bevy::sprite::{MaterialMesh2dBundle, Mesh2dHandle};
+
 use bevy_rapier2d::prelude::*;
-use crate::asset_loader::SceneAssets;
 
 #[derive(Component)]
 pub struct Booper;
@@ -19,23 +20,21 @@ impl Plugin for BooperPlugin {
     }
 }
 
-fn spawn_booper(mut commands: Commands, scene_assets: Res<SceneAssets>) {
-    /* Create the ground. */
-    commands
-        .spawn(Collider::cuboid(500.0, 50.0))
-        .insert(TransformBundle::from(Transform::from_xyz(0.0, -75.0, 0.0)));
-
-    /* Create the bouncing ball. */
+fn spawn_booper(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>, mut materials: ResMut<Assets<ColorMaterial>>) {
+    /* Create the booper. */
     commands.spawn((
-        RigidBodyBundle {
-            rigid_body: RigidBody::Dynamic,
-            model: SceneBundle {
-                scene: scene_assets.booper.clone(),
-                transform: Transform::from_xyz(0.0, 400.0, 0.0).with_scale(Vec3::splat(0.5)),
-                ..default()}
-        },
+        RigidBody::Dynamic,
         Booper,
     ))
-        .insert(Collider::ball(2.50))
-        .insert(Restitution::coefficient(1.0));
+    .insert(MaterialMesh2dBundle {
+            mesh: Mesh2dHandle(meshes.add(Circle {radius: 5.0})),
+            material: materials.add(Color::rgb(0.0, 0.0, 0.7)),
+            transform: Transform::from_xyz(0.0, 0.0, 0.0),
+            ..default()
+            })
+    .insert(TransformBundle::from(Transform::from_xyz(0.0, 400.0, 0.0)))
+    .insert(Collider::ball(5.0))
+    .insert(Restitution::coefficient(1.0));
 }
+
+

@@ -1,12 +1,14 @@
 mod camera;
 mod asset_loader;
 mod boopers;
+mod environment;
 
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
 use camera::CameraPlugin;
 use asset_loader::AssetLoaderPlugin;
 use boopers::BooperPlugin;
+use environment::EnvironmentPlugin;
 
 fn main() {
     App::new()
@@ -21,5 +23,6 @@ fn main() {
         .add_plugins(CameraPlugin)
         .add_plugins(AssetLoaderPlugin)
         .add_plugins(BooperPlugin)
+        .add_plugins(EnvironmentPlugin)
         .run();
 }
