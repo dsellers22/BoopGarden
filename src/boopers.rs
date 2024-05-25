@@ -31,12 +31,11 @@ fn spawn_booper(mut commands: Commands, scene_assets: Res<SceneAssets>) {
             rigid_body: RigidBody::Dynamic,
             model: SceneBundle {
                 scene: scene_assets.booper.clone(),
-                transform: Transform::from_scale(Vec3::new(0.1, 0.1, 0.1)),
+                transform: Transform::from_xyz(0.0, 400.0, 0.0).with_scale(Vec3::splat(0.5)),
                 ..default()}
         },
         Booper,
     ))
         .insert(Collider::ball(2.50))
-        .insert(Restitution::coefficient(1.0))
-        .insert(TransformBundle::from(Transform::from_xyz(0.0, 400.0, 0.0)));
+        .insert(Restitution::coefficient(1.0));
 }
