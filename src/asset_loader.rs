@@ -18,6 +18,6 @@ impl Plugin for AssetLoaderPlugin {
 fn load_assets(mut scene_assets: ResMut<SceneAssets>, asset_server: Res<AssetServer>) {
     *scene_assets = SceneAssets {
         booper: asset_server.load("Planet.glb#Scene0"),
-        player: asset_server.load("Astronaut.glb#Scene0"),
+        player: asset_server.load("Planet.glb#Scene0"),
     }
 }
