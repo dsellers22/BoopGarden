@@ -2,6 +2,8 @@ mod camera;
 mod boopers;
 mod environment;
 mod player;
+mod schedule;
+mod state;
 
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
@@ -9,6 +11,8 @@ use camera::CameraPlugin;
 use boopers::BooperPlugin;
 use environment::EnvironmentPlugin;
 use player::PlayerPlugin;
+use schedule::SchedulePlugin;
+use state::StatePlugin;
 
 fn main() {
     App::new()
@@ -24,5 +28,7 @@ fn main() {
         .add_plugins(BooperPlugin)
         .add_plugins(EnvironmentPlugin)
         .add_plugins(PlayerPlugin)
+        .add_plugins(SchedulePlugin)
+        .add_plugins(StatePlugin)
         .run();
 }
