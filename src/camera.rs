@@ -13,7 +13,7 @@ impl Plugin for CameraPlugin {
 fn spawn_camera2d(mut commands: Commands) {
     commands.spawn(Camera2dBundle {
         transform: Transform::from_xyz(0.0, 0.0, CAMERA_DISTANCE).looking_at(Vec3::ZERO, Vec3::Y),
-        projection: OrthographicProjection { scale: 0.25, ..default()},
+        projection: OrthographicProjection { scale: 0.5, ..default()},
         ..default()
     });
 }
