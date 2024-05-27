@@ -41,10 +41,11 @@ fn spawn_booper(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>, mut ma
     .insert(TransformBundle::from(Transform::from_xyz(0.0, 400.0, 0.0)))
     .insert(Collider::ball(5.0))
     .insert(Restitution::coefficient(1.0))
-        .insert(ExternalImpulse {
+    .insert(ExternalImpulse {
             impulse: Vec2::new(0.0, 0.0),
             torque_impulse: 0.0,
-        });
+        })
+    .insert(Damping { linear_damping: 0.0, angular_damping: 0.8});
 }
 
  fn boop(
