@@ -23,7 +23,7 @@ impl Plugin for BooperPlugin {
             timer: Timer::from_seconds(BOOP_FREQUENCY, TimerMode::Repeating),
         })
             .add_systems(Startup, spawn_booper)
-            .add_systems(Update, boop);
+            .add_systems(Update, (boop, detect_player_contacts));
     }
 }
 
@@ -45,7 +45,8 @@ fn spawn_booper(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>, mut ma
             impulse: Vec2::new(0.0, 0.0),
             torque_impulse: 0.0,
         })
-    .insert(Damping { linear_damping: 0.0, angular_damping: 0.8});
+    .insert(Damping { linear_damping: 0.0, angular_damping: 0.8})
+        .insert(ActiveEvents::COLLISION_EVENTS);
 }
 
  fn boop(
@@ -70,6 +71,25 @@ fn spawn_booper(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>, mut ma
          external_impulse.impulse += Vec2::new(0.0, BOOP_LIFT);
      }
  }
+
+
+fn detect_player_contacts(
+    rapier_context: Res<RapierContext>,
+    mut query: Query<Entity, With<Booper>>,
+    mut player_query: Query<Entity, With<Player>>,
+) {
+    let player_entity: Entity = player_query.get_single_mut().unwrap();
+
+    for booper_entity in query.iter_mut() {
+        if let Some(contact_pair) = rapier_context.contact_pair(booper_entity, player_entity) {
+            if contact_pair.has_any_active_contacts() {
+                println!("Player Contact Detected!");
+            }
+        }
+    }
+}
+
+
 
 
 

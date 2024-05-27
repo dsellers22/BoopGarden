@@ -4,6 +4,7 @@ mod environment;
 mod player;
 mod schedule;
 mod state;
+mod debug;
 
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
@@ -13,6 +14,7 @@ use environment::EnvironmentPlugin;
 use player::PlayerPlugin;
 use schedule::SchedulePlugin;
 use state::StatePlugin;
+use debug::DebugPlugin;
 
 fn main() {
     App::new()
@@ -30,5 +32,7 @@ fn main() {
         .add_plugins(PlayerPlugin)
         .add_plugins(SchedulePlugin)
         .add_plugins(StatePlugin)
+        .add_plugins(DebugPlugin)
         .run();
 }
+
