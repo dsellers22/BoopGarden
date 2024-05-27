@@ -34,7 +34,7 @@ fn update_camera2d(
         return;
     };
     
-    let Ok(mut player_transform) = player_query.get_single_mut() else {
+    let Ok(player_transform) = player_query.get_single_mut() else {
         return;
     };
     
