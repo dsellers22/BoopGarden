@@ -3,8 +3,8 @@ use bevy::sprite::{MaterialMesh2dBundle, Mesh2dHandle};
 use bevy_rapier2d::prelude::*;
 use crate::schedule::InGameSet;
 
-const PLAYER_SPEED: f32 = 30.0;
-const PLAYER_JUMP: f32 = 5000.0;
+const PLAYER_SPEED: f32 = 80.0;
+const PLAYER_JUMP: f32 = 3500.0;
 const PLAYER_RESTITUTION: f32 = 0.5;
 
 #[derive(Component)]
