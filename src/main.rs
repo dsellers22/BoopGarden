@@ -5,6 +5,8 @@ mod player;
 mod schedule;
 mod state;
 mod debug;
+mod garden;
+mod tree;
 
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
@@ -15,6 +17,7 @@ use player::PlayerPlugin;
 use schedule::SchedulePlugin;
 use state::StatePlugin;
 use debug::DebugPlugin;
+use garden::GardenPlugin;
 
 fn main() {
     App::new()
@@ -33,6 +36,7 @@ fn main() {
         .add_plugins(SchedulePlugin)
         .add_plugins(StatePlugin)
         .add_plugins(DebugPlugin)
+        .add_plugins(GardenPlugin)
         .run();
 }
 

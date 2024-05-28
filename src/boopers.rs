@@ -2,6 +2,8 @@
 use bevy::sprite::{MaterialMesh2dBundle, Mesh2dHandle};
 use bevy_rapier2d::prelude::*;
 use crate::player::Player;
+use crate::garden::{Garden, GardenBundle};
+use crate::tree::{Tree, TreeBundle};
 
 const BOOP_FREQUENCY: f32 = 3.0;
 const BOOP_POWER: f32 = 3500.0;
@@ -23,7 +25,7 @@ impl Plugin for BooperPlugin {
             timer: Timer::from_seconds(BOOP_FREQUENCY, TimerMode::Repeating),
         })
             .add_systems(Startup, spawn_booper)
-            .add_systems(Update, (boop, detect_player_contacts));
+            .add_systems(Update, (boop, detect_player_contacts, spawn_tree));
     }
 }
 
@@ -89,6 +91,40 @@ fn detect_player_contacts(
     }
 }
 
+// NOT FINAL
+
+fn spawn_tree(
+    mut commands: Commands,
+    rapier_context: Res<RapierContext>,
+    mut boop_query: Query<(Entity, &Transform), With<Booper>>,
+    mut garden_query: Query<Entity, With<Garden>>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<ColorMaterial>>
+) {
+    for (booper_entity, transform) in boop_query.iter_mut() {
+        for garden_entity in garden_query.iter_mut() {
+            if let Some(contact_pair) = rapier_context.contact_pair(booper_entity, garden_entity) {
+                if contact_pair.has_any_active_contacts() {
+                    println!("Garden Contact Detected!");
+                    commands.entity(booper_entity).despawn_recursive();
+                    commands.spawn( (
+                        TreeBundle {
+                            root_collider: Collider::cuboid(2.5, 25.0),
+                            material_mesh: MaterialMesh2dBundle {
+                                mesh: Mesh2dHandle(meshes.add(Rectangle::new(5.0, 50.0))),
+                                material: materials.add(Color::rgb(0.0, 0.0, 0.0)),
+                                transform: Transform::from_translation(transform.translation), //FIX THIS
+                                ..default()
+                            },
+                        },
+                        Tree,
+                    ));
+                }
+            }
+        }
+
+    }
+}
 
 
 
