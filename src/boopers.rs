@@ -102,18 +102,26 @@ fn spawn_tree(
     mut materials: ResMut<Assets<ColorMaterial>>
 ) {
     for (booper_entity, transform) in boop_query.iter_mut() {
+        
         for garden_entity in garden_query.iter_mut() {
+        
             if let Some(contact_pair) = rapier_context.contact_pair(booper_entity, garden_entity) {
+        
                 if contact_pair.has_any_active_contacts() {
+        
                     println!("Garden Contact Detected!");
+        
+                    let spawn_translation: Vec3 = Vec3::new(transform.translation.x, transform.translation.y + 20.0, transform.translation.z - 1.0);
+        
                     commands.entity(booper_entity).despawn_recursive();
+        
                     commands.spawn( (
                         TreeBundle {
                             root_collider: Collider::cuboid(2.5, 25.0),
                             material_mesh: MaterialMesh2dBundle {
                                 mesh: Mesh2dHandle(meshes.add(Rectangle::new(5.0, 50.0))),
                                 material: materials.add(Color::rgb(0.0, 0.0, 0.0)),
-                                transform: Transform::from_translation(transform.translation), //FIX THIS
+                                transform: Transform::from_translation(spawn_translation),//FIX THIS
                                 ..default()
                             },
                         },
