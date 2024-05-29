@@ -2,8 +2,8 @@
 use bevy::sprite::{MaterialMesh2dBundle, Mesh2dHandle};
 use bevy_rapier2d::prelude::*;
 use crate::player::Player;
-use crate::garden::{Garden, GardenBundle};
-use crate::tree::{Tree, TreeBundle};
+use crate::garden::Garden;
+use crate::tree::{Tree, TreeBundle, TREE_HEIGHT, TREE_THICKNESS};
 
 const BOOP_FREQUENCY: f32 = 3.0;
 const BOOP_POWER: f32 = 3500.0;
@@ -25,7 +25,7 @@ impl Plugin for BooperPlugin {
             timer: Timer::from_seconds(BOOP_FREQUENCY, TimerMode::Repeating),
         })
             .add_systems(Startup, spawn_booper)
-            .add_systems(Update, (boop, detect_player_contacts, spawn_tree));
+            .add_systems(Update, (boop, spawn_tree));
     }
 }
 
@@ -74,23 +74,6 @@ fn spawn_booper(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>, mut ma
      }
  }
 
-
-fn detect_player_contacts(
-    rapier_context: Res<RapierContext>,
-    mut query: Query<Entity, With<Booper>>,
-    mut player_query: Query<Entity, With<Player>>,
-) {
-    let player_entity: Entity = player_query.get_single_mut().unwrap();
-
-    for booper_entity in query.iter_mut() {
-        if let Some(contact_pair) = rapier_context.contact_pair(booper_entity, player_entity) {
-            if contact_pair.has_any_active_contacts() {
-                println!("Player Contact Detected!");
-            }
-        }
-    }
-}
-
 // NOT FINAL
 
 fn spawn_tree(
@@ -117,13 +100,14 @@ fn spawn_tree(
         
                     commands.spawn( (
                         TreeBundle {
-                            root_collider: Collider::cuboid(2.5, 25.0),
+                            root_collider: Collider::cuboid(TREE_THICKNESS/2.0, TREE_HEIGHT/2.0),
                             material_mesh: MaterialMesh2dBundle {
-                                mesh: Mesh2dHandle(meshes.add(Rectangle::new(5.0, 50.0))),
+                                mesh: Mesh2dHandle(meshes.add(Rectangle::new(TREE_THICKNESS, TREE_HEIGHT))),
                                 material: materials.add(Color::rgb(0.0, 0.0, 0.0)),
-                                transform: Transform::from_translation(spawn_translation),//FIX THIS
+                                transform: Transform::from_translation(spawn_translation),
                                 ..default()
                             },
+                            ..default()
                         },
                         Tree,
                     ));

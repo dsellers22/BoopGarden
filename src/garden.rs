@@ -16,18 +16,20 @@ pub struct Garden;
 #[derive(Bundle)]
 pub struct GardenBundle {
     pub collider: Collider,
-    pub materialmesh: MaterialMesh2dBundle<ColorMaterial>,    
+    pub material_mesh: MaterialMesh2dBundle<ColorMaterial>,    
 }
 
 fn spawn_first_garden(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>, mut materials: ResMut<Assets<ColorMaterial>>) {
     commands.spawn((
-            Collider::cuboid(50.0, 5.0),
-            Garden,
-        ))
-        .insert(MaterialMesh2dBundle {
-            mesh: Mesh2dHandle(meshes.add(Rectangle::new(100.0, 10.0))),
-            material: materials.add(Color::rgb(0.0, 0.5, 0.0)),
-            ..default()
-        })
-        .insert(TransformBundle::from(Transform::from_xyz(150.0, -20.0, 0.0)));
+        GardenBundle {
+            collider: Collider::cuboid(50.0, 5.0),
+            material_mesh: MaterialMesh2dBundle {
+                mesh: Mesh2dHandle(meshes.add(Rectangle::new(100.0, 10.0))),
+                material: materials.add(Color::rgb(0.0, 0.5, 0.0)),
+                transform: Transform::from_xyz(150.0, -20.0, 0.0),//FIX THIS
+                ..default()
+            },
+        },
+        Garden,
+    ));
 }

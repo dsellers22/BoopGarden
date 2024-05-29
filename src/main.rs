@@ -10,6 +10,7 @@ mod tree;
 
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
+use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use camera::CameraPlugin;
 use boopers::BooperPlugin;
 use environment::EnvironmentPlugin;
@@ -18,6 +19,7 @@ use schedule::SchedulePlugin;
 use state::StatePlugin;
 use debug::DebugPlugin;
 use garden::GardenPlugin;
+use tree::TreePlugin;
 
 fn main() {
     App::new()
@@ -29,6 +31,7 @@ fn main() {
         .add_plugins(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.0))
         .add_plugins(RapierDebugRenderPlugin::default())
         .add_plugins(DefaultPlugins)
+        .add_plugins(WorldInspectorPlugin::new())
         .add_plugins(CameraPlugin)
         .add_plugins(BooperPlugin)
         .add_plugins(EnvironmentPlugin)
@@ -37,6 +40,7 @@ fn main() {
         .add_plugins(StatePlugin)
         .add_plugins(DebugPlugin)
         .add_plugins(GardenPlugin)
+        .add_plugins(TreePlugin)
         .run();
 }
 
